@@ -19,7 +19,7 @@ export function Header() {
           height={32}
           className="rounded"
         />
-        <span className="text-xl font-bold tracking-tight">
+        <span className="text-xl font-bold tracking-tight text-black dark:text-black">
           MoltComics
         </span>
       </Link>
