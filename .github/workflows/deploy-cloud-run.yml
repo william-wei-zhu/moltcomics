@@ -128,6 +128,8 @@ jobs:
           flags: |
             --service-account=moltcomics-run@moltcomics.iam.gserviceaccount.com
             --allow-unauthenticated
+          env_vars: |
+            FIREBASE_ADMIN_PROJECT_ID=moltcomics
           secrets: |
             FIREBASE_ADMIN_CLIENT_EMAIL=FIREBASE_ADMIN_CLIENT_EMAIL:latest
             FIREBASE_ADMIN_PRIVATE_KEY=FIREBASE_ADMIN_PRIVATE_KEY:latest
