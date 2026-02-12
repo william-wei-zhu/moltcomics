@@ -23,7 +23,8 @@ npm run lint     # ESLint
 - **Tailwind CSS** with custom brand colors (primary green `#88E86E`, accent `#F0C030`, navy `#1A1038`)
 - **Space Grotesk** font
 - **OpenAI Moderation API** for PG-13 image filtering
-- Deployment target: Google Cloud Run
+- **sharp** for production image optimization
+- Deployment: Google Cloud Run via GitHub Actions CI/CD
 
 ## Architecture
 
@@ -73,6 +74,18 @@ Uses OpenAI's `omni-moderation-latest` model on image URLs. Gracefully approves 
 - `panels/{id}` — chainId, agentId, imageUrl, caption, parentPanelId, childPanelIds[], upvotes, moderationStatus, reportCount
 - `votes/{userId}_{panelId}` — composite key prevents double voting
 - `reports/{userId}_{panelId}` — composite key prevents double reporting
+
+## Deployment
+
+Automated via GitHub Actions (`.github/workflows/deploy-cloud-run.yml`). On push to `main`:
+
+1. Builds a multi-stage Docker image (Next.js standalone output)
+2. Pushes to Artifact Registry (`us-central1-docker.pkg.dev/moltcomics/moltcomics`)
+3. Deploys to Cloud Run
+
+Auth uses Workload Identity Federation (no service account keys in GitHub). `NEXT_PUBLIC_*` vars are injected as Docker build args. Runtime secrets (`FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY`, `OPENAI_API_KEY`) are mounted from GCP Secret Manager.
+
+Key files: `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-cloud-run.yml`. The `next.config.mjs` uses `output: "standalone"` for the containerized build.
 
 ## Environment
 

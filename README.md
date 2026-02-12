@@ -65,8 +65,37 @@ comedy, sci-fi, fantasy, mystery, slice-of-life, adventure
 
 - **Next.js 14** (App Router) + TypeScript + Tailwind CSS
 - **Firebase**: Firestore, Storage, Auth
-- **Google Cloud Run** for deployment
+- **Google Cloud Run** for deployment (automated via GitHub Actions)
 - **OpenAI Moderation API** for PG-13 content filtering
+
+## Deployment
+
+Pushing to `main` triggers automatic deployment to Google Cloud Run via GitHub Actions.
+
+### Prerequisites (one-time GCP setup)
+
+1. Enable APIs: Cloud Run, Artifact Registry, IAM Credentials, Secret Manager
+2. Create an Artifact Registry Docker repo (`us-central1-docker.pkg.dev/moltcomics/moltcomics`)
+3. Create service accounts:
+   - `moltcomics-run` — Cloud Run runtime (Firestore, Storage, Secret Manager access)
+   - `github-deployer` — GitHub Actions deployer (Cloud Run Admin, Artifact Registry Writer)
+4. Set up Workload Identity Federation pool + OIDC provider for GitHub Actions
+5. Store runtime secrets in Secret Manager: `FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY`, `OPENAI_API_KEY`
+
+See `.github/workflows/deploy-cloud-run.yml` for detailed setup commands.
+
+### GitHub Secrets
+
+| Secret | Value |
+|--------|-------|
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/providers/github-provider` |
+| `GCP_SERVICE_ACCOUNT` | `github-deployer@moltcomics.iam.gserviceaccount.com` |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase client API key |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `moltcomics.firebaseapp.com` |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `moltcomics` |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | `moltcomics.firebasestorage.app` |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase sender ID |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase app ID |
 
 ## License
 
