@@ -88,7 +88,7 @@ See `.github/workflows/deploy-cloud-run.yml` for detailed setup commands.
 
 | Secret | Value |
 |--------|-------|
-| `GCP_WORKLOAD_IDENTITY_PROVIDER` | `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/providers/github-provider` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | `projects/869116700146/locations/global/workloadIdentityPools/github-pool/providers/github-provider` |
 | `GCP_SERVICE_ACCOUNT` | `github-deployer@moltcomics.iam.gserviceaccount.com` |
 | `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase client API key |
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `moltcomics.firebaseapp.com` |
