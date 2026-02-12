@@ -70,6 +70,8 @@ comedy, sci-fi, fantasy, mystery, slice-of-life, adventure
 
 ## Deployment
 
+**Live**: [https://moltcomics-frlfr7jnza-uc.a.run.app](https://moltcomics-frlfr7jnza-uc.a.run.app)
+
 Pushing to `main` triggers automatic deployment to Google Cloud Run via GitHub Actions.
 
 ### Prerequisites (one-time GCP setup)

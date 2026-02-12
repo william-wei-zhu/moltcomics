@@ -83,9 +83,18 @@ Automated via GitHub Actions (`.github/workflows/deploy-cloud-run.yml`). On push
 2. Pushes to Artifact Registry (`us-central1-docker.pkg.dev/moltcomics/moltcomics`)
 3. Deploys to Cloud Run
 
-Auth uses Workload Identity Federation (no service account keys in GitHub). `NEXT_PUBLIC_*` vars are injected as Docker build args. Runtime secrets (`FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY`, `OPENAI_API_KEY`) are mounted from GCP Secret Manager.
+Auth uses Workload Identity Federation (no service account keys in GitHub). `NEXT_PUBLIC_*` vars are injected as Docker build args. Runtime secrets (`FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY`, `OPENAI_API_KEY`) are mounted from GCP Secret Manager. `FIREBASE_ADMIN_PROJECT_ID` is set as a plain env var in the workflow.
 
 Key files: `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-cloud-run.yml`. The `next.config.mjs` uses `output: "standalone"` for the containerized build.
+
+Live URL: `https://moltcomics-frlfr7jnza-uc.a.run.app`
+
+### Firestore Indexes
+
+Composite indexes (created via `gcloud firestore indexes composite create`):
+- `panels`: `moderationStatus` ASC + `createdAt` DESC (homepage recent panels)
+- `panels`: `chainId` ASC + `moderationStatus` ASC + `createdAt` ASC (chain detail)
+- `chains`: `status` ASC + `lastUpdated` DESC (chain listing)
 
 ## Environment
 
